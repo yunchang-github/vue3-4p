@@ -69,7 +69,7 @@ onBeforeUnmount(() => {
   window.removeEventListener("resize", listeningWindow);
 });
 </script>
-
+ 
 <style scoped lang="scss">
 @import "./index.scss";
 </style>

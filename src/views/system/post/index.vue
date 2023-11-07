@@ -1,13 +1,7 @@
 <template>
-  post
+  <div>
+    post
+  </div>
 </template>
 
-<script>
-export default {
-
-}
-</script>
-
-<style>
-
-</style>
+<script setup lang="ts" name="post"></script>

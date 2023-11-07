@@ -197,6 +197,7 @@ export function handleInitRoutes(menuList: Menu.MenuOptionsOld[]): Menu.MenuOpti
   return menuList;
 }
 function defaultInitFun(opt: Menu.MenuOptionsOld) {
+  opt.name= opt.name.toLocaleLowerCase()
   if(opt?.component){
     opt.component=opt.component.indexOf("/")===0 ? opt.component: "/"+opt.component
   }

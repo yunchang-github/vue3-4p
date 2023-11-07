@@ -45,11 +45,12 @@ export const getAuthButtonListApi = () => {
 };
 
 // 获取菜单列表
-export const getAuthMenuListApi = () => {
+export const getAuthMenuListApi = (domain:string) => {
   return http.request<Menu.MenuOptionsOld[]>({
     method: "get",
     url: PORT1 + `/system/selRouters`,
-    isHideLoading: true
+    isHideLoading: true,
+    params: {domain}
   });
 };
 

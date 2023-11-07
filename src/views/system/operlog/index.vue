@@ -1,13 +1,7 @@
 <template>
-  外层的
+  <div>
+    外层的
+  </div>
 </template>
 
-<script>
-export default {
-
-}
-</script>
-
-<style>
-
-</style>
+<script setup lang="ts" name="operlog"></script>

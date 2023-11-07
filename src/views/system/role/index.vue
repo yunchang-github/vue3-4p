@@ -1,13 +1,7 @@
 <template>
-  role
+  <div class="card content-box">
+    <span class="text"> role（待完善） 🍓🍇🍈🍉</span>
+  </div>
 </template>
 
-<script>
-export default {
-
-}
-</script>
-
-<style>
-
-</style>
+<script setup lang="ts" name="role"></script>

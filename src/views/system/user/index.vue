@@ -1,13 +1,7 @@
 <template>
-  user
+  <div>
+    user
+  </div>
 </template>
 
-<script>
-export default {
-
-}
-</script>
-
-<style>
-
-</style>
+<script setup lang="ts" name="user"></script>

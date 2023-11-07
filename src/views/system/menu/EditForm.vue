@@ -297,6 +297,7 @@ const saveDialog = async (formEl: FormInstance | undefined) => {
     if (props.handleType == 'add') {
       res = await addFun(form)
     } else {
+      console.log("修改提交的数据",form)
       res = await editFun(form)
     }
     ElMessage.success(res)

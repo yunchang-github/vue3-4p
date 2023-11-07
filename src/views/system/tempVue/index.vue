@@ -48,9 +48,9 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+     <!-- 新增编辑弹窗 -->
+    <AddOrEdit @render-table="renderTable" ref="AddOrEditRef" :handle-type="handleType" :form-data="mainRow" />
   </div>
-  <!-- 新增编辑弹窗 -->
-  <AddOrEdit @render-table="renderTable" ref="AddOrEditRef" :handle-type="handleType" :form-data="mainRow" />
 </template>
 
 <script lang="ts" setup>

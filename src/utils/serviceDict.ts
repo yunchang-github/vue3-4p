@@ -12,7 +12,7 @@ export const genderType = [
  * @description：状态
  */
 export const commonStatus = [
-  { label: "正常", value: "0" ,type:"primary"},
+  { label: "正常", value: "0" ,type:""},
   { label: "停用", value: "1",type:"warn"}
 ];
 
@@ -20,6 +20,6 @@ export const commonStatus = [
  * @description：状态
  */
 export const showStatus = [
-  { label: "显示", value: "0" ,type:"primary"},
+  { label: "显示", value: "0" ,type:""},
   { label: "隐藏", value: "1",type:"warn"}
 ];

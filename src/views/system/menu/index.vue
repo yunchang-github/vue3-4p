@@ -1,12 +1,17 @@
 <template>
-  <!-- card 背景颜色  table-box 高度处理-->
   <div class="card table-box">
+    <!-- card 背景颜色  table-box 高度处理-->
     <el-form class="search-form" :inline="true" :model="formInline" v-show="showSearch">
       <el-form-item label="菜单名称">
-        <el-input v-model="formInline.menuName" placeholder="请输入" clearable style="width:192px;"/>
+        <el-input
+          v-model="formInline.menuName"
+          placeholder="请输入"
+          clearable
+          style="width: 192px"
+        />
       </el-form-item>
       <el-form-item label="状态">
-        <el-select v-model="formInline.status" placeholder="请选择" clearable style="width:192px;">
+        <el-select v-model="formInline.status" placeholder="请选择" clearable style="width: 192px">
           <el-option
             v-for="item in commonStatus"
             :key="item.value"
@@ -16,8 +21,12 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="renderTable"><el-icon><Search /></el-icon>搜索</el-button>
-        <el-button @click="resetQuery"><el-icon><Refresh /></el-icon>重置</el-button>
+        <el-button type="primary" @click="renderTable"
+          ><el-icon><Search /></el-icon>搜索</el-button
+        >
+        <el-button @click="resetQuery"
+          ><el-icon><Refresh /></el-icon>重置</el-button
+        >
       </el-form-item>
     </el-form>
     <div class="table-header">
@@ -44,7 +53,7 @@
       :data="tableData"
       style="width: 100%"
       :default-expand-all="isExpandAll"
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column
         v-for="item in tableColumns"
@@ -54,44 +63,44 @@
         :min-width="item.width || 80"
       >
         <template #default="{ row }">
-          <template v-if="item.prop=='icon'">
-            <el-icon :size="18" v-if="row.icon && row.icon!='#'">
+          <template v-if="item.prop == 'icon'">
+            <el-icon :size="18" v-if="row.icon && row.icon != '#'">
               <component :is="row.icon" />
             </el-icon>
           </template>
-          <template v-else-if="item.prop=='status'">
-           <dict-tag :options="commonStatus" :value="row.status"/>
+          <template v-else-if="item.prop == 'status'">
+            <dict-tag :options="commonStatus" :value="row.status" />
           </template>
           <template v-else>
-            {{row[item.prop]}}
+            {{ row[item.prop] }}
           </template>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200">
+      <el-table-column label="操作" width="230">
         <template #default="{ row }">
-          <el-button type="text" :icon="'Edit'" @click="handleEdit(row)">修改</el-button>
-          <el-button type="text" :icon="'Plus'" @click="handleEdit(row)">新增</el-button>
-          <el-button type="text" :icon="'Delete'" @click="handleDelete(row)">删除</el-button>
+          <el-button text @click="handleEdit(row)">修改</el-button>
+          <el-button text @click="handleEdit(row)">新增</el-button>
+          <el-button text @click="handleDelete(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <!-- 新增编辑弹窗 -->
+    <AddOrEdit
+      @render-table="renderTable"
+      ref="AddOrEditRef"
+      :handle-type="handleType"
+      :form-data="mainRow"
+      :tree-data="treeData"
+    />
   </div>
-  <!-- 新增编辑弹窗 -->
-  <AddOrEdit
-    @render-table="renderTable"
-    ref="AddOrEditRef"
-    :handle-type="handleType"
-    :form-data="mainRow"
-    :tree-data="treeData"
-  />
 </template>
 
-<script lang="ts" setup name="Menu">
+<script lang="ts" setup name="menu">
 import { getMenuList, deleteMenu } from '@/api/modules/system/menu'
 import { commonStatus } from '@/utils/serviceDict'
-import { Menu } from "@/api/interface/system";
+import { Menu } from '@/api/interface/system'
 import AddOrEdit from './EditForm.vue'
-import { ref, reactive, onBeforeMount, computed, watch,nextTick } from 'vue'
+import { ref, reactive, onBeforeMount, computed, watch, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const loading = ref(false)
@@ -122,31 +131,31 @@ watch(assemblySize, (newV) => {
 
 // 编辑参数 未处理成响应式
 interface formDataInterface {
-  menuId: number;
-  parentId: number;
+  menuId: number
+  parentId: number
   status: string
   menuName: string
 }
 let mainRow = ref<formDataInterface>({
   menuId: 0,
-  parentId:0,
+  parentId: 0,
   status: '',
   menuName: ''
 })
 // 表格列
 const tableColumns = [
   { prop: 'menuName', label: '菜单名称' },
-  { prop: 'icon', label: '图标',width:70 },
-  { prop: 'orderTag', label: '排序',width:70 },
-  { prop: 'perms', label: '权限标识' },
-  { prop: 'component', label: '组件路径',width:130 },
-  { prop: 'status', label: '状态',width:70 },
-  { prop: 'addTime', label: '创建时间' },
+  { prop: 'icon', label: '图标', width: 70 },
+  { prop: 'orderTag', label: '排序', width: 70 },
+  { prop: 'perms', label: '权限标识',width: 110 },
+  { prop: 'component', label: '组件路径', width: 150 },
+  { prop: 'status', label: '状态', width: 70 },
+  { prop: 'addTime', label: '创建时间' }
 ]
 // 表格数据
 let tableData = []
 
-let treeData=[]
+let treeData = []
 // 生命周期钩子 类似vue2中 created
 onBeforeMount(async () => {
   renderTable()
@@ -155,8 +164,8 @@ onBeforeMount(async () => {
 const addRow = () => {
   // $refs.AddOrEditRef <=> AddOrEditRef.value
   mainRow.value = {
-    menuId:0,
-    parentId:0,
+    menuId: 0,
+    parentId: 0,
     status: '',
     menuName: ''
   }
@@ -165,23 +174,23 @@ const addRow = () => {
 }
 // 重置查询
 const resetQuery = () => {
-  formInline.menuName= ''
-  formInline.status= ''
+  formInline.menuName = ''
+  formInline.status = ''
 }
 // 折叠/展开
 const toggleExpandAll = () => {
-  refreshTable.value=false
-  isExpandAll.value=!isExpandAll.value
+  refreshTable.value = false
+  isExpandAll.value = !isExpandAll.value
   nextTick(() => {
-    refreshTable.value = true;
-  });
+    refreshTable.value = true
+  })
 }
 // 编辑
 const handleEdit = (row: formDataInterface) => {
   handleType.value = 'edit'
   mainRow.value = {
     menuId: row.menuId,
-    parentId:row.menuId,
+    parentId: row.menuId,
     status: row.status,
     menuName: row.menuName
   }
@@ -209,15 +218,14 @@ const getTableData = async () => {
   loading.value = true
   try {
     let { data } = await getMenuList(formInline)
-    tableData =handleTree(data)
-    treeData=[
+    tableData = handleTree(data)
+    treeData = [
       {
         menuId: 0,
-        menuName: '主类目', 
-        children:tableData
+        menuName: '主类目',
+        children: tableData
       }
     ]
-    console.log("树状数",treeData)
     loading.value = false
   } catch (e) {
     loading.value = false

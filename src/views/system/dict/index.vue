@@ -1,13 +1,7 @@
 <template>
-  dict
+  <div>
+    dict
+  </div>
 </template>
 
-<script>
-export default {
-
-}
-</script>
-
-<style>
-
-</style>
+<script setup lang="ts" name="dict"></script>

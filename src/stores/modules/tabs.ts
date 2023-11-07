@@ -13,6 +13,7 @@ export const useTabsStore = defineStore({
     async addTabs(tabItem: TabsMenuProps) {
       if (this.tabsMenuList.every(item => item.path !== tabItem.path)) {
         this.tabsMenuList.push(tabItem);
+        console.log("新增",this.tabsMenuList)
       }
     },
     // Remove Tabs

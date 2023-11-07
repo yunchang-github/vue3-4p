@@ -33,7 +33,6 @@ export const initDynamicRouter = async () => {
       return Promise.reject("No permission");
     }
     // 3.添加动态路由
-    console.log(authStore.flatMenuListGet)
     authStore.flatMenuListGet.forEach(item => {
       item.children && delete item.children;
       if (item.component && typeof item.component == "string") {

@@ -57,7 +57,8 @@ export const useAuthStore = defineStore({
     },
     // Get AuthMenuList
     async getAuthMenuList() {
-      const { data } = await getAuthMenuListApi();
+      import.meta.env.VITE_API_URL as string
+      const { data } = await getAuthMenuListApi(import.meta.env.VITE_APP_ISWMS as string);
       // 处理成当前框架需要的数据
       let tempData=handleInitRoutes(data);
       // 目前只处理2层
@@ -75,6 +76,7 @@ export const useAuthStore = defineStore({
           })
         }
       })
+      console.log(123,tempData)
       this.authMenuList = tempData
     },
     // Set RouteName
