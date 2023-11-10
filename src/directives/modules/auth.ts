@@ -1,23 +1,29 @@
 /**
- * v-auth
+ * v-hasPermi
  * 按钮权限指令
  */
 import { useAuthStore } from "@/stores/modules/auth";
 import type { Directive, DirectiveBinding } from "vue";
 
-const auth: Directive = {
+const hasPermi: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const { value } = binding;
+    const all_permission = "*:*:*";
     const authStore = useAuthStore();
-    
-    const currentPageRoles = authStore.authButtonListGet;
-    if (value instanceof Array && value.length) {
-      const hasPermission = value.every(item => currentPageRoles.includes(item));
-      if (!hasPermission) el.remove();
+    const permissions = authStore.authButtonListGet
+
+    if (value && value instanceof Array && value.length > 0) {
+      const permissionFlag = value
+      const hasPermissions = permissions.some(permission => {
+        return all_permission === permission || permissionFlag.includes(permission)
+      })
+      if (!hasPermissions) {
+        el.parentNode && el.parentNode.removeChild(el)
+      }
     } else {
-      if (!currentPageRoles.includes(value)) el.remove();
+      throw new Error(`请设置操作权限标签值`)
     }
   }
 };
 
-export default auth;
+export default hasPermi;

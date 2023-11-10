@@ -24,13 +24,11 @@
         <el-button type="primary" @click="renderTable"
           ><el-icon><Search /></el-icon>搜索</el-button
         >
-        <el-button @click="resetQuery"
-          ><el-icon><Refresh /></el-icon>重置</el-button
-        >
+        <el-button @click="resetQuery"><el-icon><Refresh /></el-icon>重置</el-button>
       </el-form-item>
     </el-form>
     <div class="table-header">
-      <el-button type="primary" plain @click="addRow"
+      <el-button type="primary" plain @click="addRow" v-hasPermi="['system:menu:add']"
         ><el-icon><Plus /></el-icon>新增</el-button
       >
       <el-button type="info" plain @click="toggleExpandAll"
@@ -78,9 +76,9 @@
       </el-table-column>
       <el-table-column label="操作" width="230">
         <template #default="{ row }">
-          <el-button text @click="handleEdit(row)">修改</el-button>
-          <el-button text @click="handleEdit(row)">新增</el-button>
-          <el-button text @click="handleDelete(row)">删除</el-button>
+          <el-button type="primary" text @click="handleEdit(row)" v-hasPermi="['system:menu:edit']">修改</el-button>
+          <el-button type="primary" text @click="handleAdd(row)" v-hasPermi="['system:menu:add']">新增</el-button>
+          <el-button type="primary" text @click="handleDelete(row)" v-hasPermi="['system:menu:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -131,10 +129,10 @@ watch(assemblySize, (newV) => {
 
 // 编辑参数 未处理成响应式
 interface formDataInterface {
-  menuId: number
-  parentId: number
-  status: string
-  menuName: string
+  menuId?: number;
+  parentId: number;
+  status: string;
+  menuName: string;
 }
 let mainRow = ref<formDataInterface>({
   menuId: 0,
@@ -162,10 +160,19 @@ onBeforeMount(async () => {
 })
 // 方法
 const addRow = () => {
-  // $refs.AddOrEditRef <=> AddOrEditRef.value
   mainRow.value = {
     menuId: 0,
     parentId: 0,
+    status: '',
+    menuName: ''
+  }
+  handleType.value = 'add'
+  AddOrEditRef.value.dialogFormVisible = true
+}
+// 方法
+const handleAdd = (row:formDataInterface) => {
+  mainRow.value = {
+    parentId: row.menuId || 0,
     status: '',
     menuName: ''
   }

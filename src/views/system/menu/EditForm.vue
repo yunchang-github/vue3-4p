@@ -279,6 +279,8 @@ const handleInitFormData = () => {
     // form.sku = props.formData.sku
     // form.shopName = props.formData.shopName
     // !form.id && delete form.id
+  }else{
+    form.parentId = props.formData.parentId
   }
 }
 

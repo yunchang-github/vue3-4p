@@ -76,7 +76,6 @@ export const useAuthStore = defineStore({
           })
         }
       })
-      console.log(123,tempData)
       this.authMenuList = tempData
     },
     // Set RouteName
