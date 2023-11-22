@@ -13,6 +13,14 @@ export const getMenuList = (params: Menu.ReqParams) => {
     params
   });
 };
+// 查询菜单下拉树结构
+export const treeselect = () => {
+  return http.request({
+    method: "get",
+    url: PORT1 + `/menu/treeselect`,
+    isHideLoading: true
+  });
+};
 
 export const deleteMenu = (menuId:string) => {
   return http.request({
@@ -38,5 +46,14 @@ export const addFun = (data:Menu.RuleForm) => {
     isHideLoading: true,
     types:"json",
     data
+  });
+};
+
+// 根据角色ID查询菜单下拉树结构
+export const roleMenuTreeselect = (roleId:string) => {
+  return http.request({
+    method: "get",
+    url: PORT1 + `/menu/roleMenuTreeselect/` + roleId,
+    isHideLoading: true
   });
 };

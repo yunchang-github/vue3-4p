@@ -136,9 +136,10 @@
       </el-table>
       <el-pagination
         style="float: right; margin-top: 10px"
-        :current-page="pageNum"
-        :page-size="pageSize"
+        v-model:current-page="pageNum"
+        v-model:page-size="pageSize"
         :page-sizes="[100, 200, 300, 400]"
+        :small="small"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
         @size-change="handleSizeChange"
@@ -176,7 +177,7 @@ import {
 import { encrypt } from "@/utils/jsencrypt";
 import TreeFilter from '@/components/TreeFilter/index.vue'
 import AddOrEdit from './EditForm.vue'
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref,Ref, reactive, onMounted, computed } from 'vue'
 import { useAuthStore } from '@/stores/modules/auth'
 import { ElTable, ElMessageBox, ElMessage } from 'element-plus'
 interface TreeData {
@@ -208,7 +209,7 @@ const formInline = reactive({
   phone: undefined,
   status: undefined
 })
-let mainRow = reactive({})
+let mainRow:Ref<User.ResUserList | null> = ref(null)
 // 岗位选项
 let postOptions = []
 // 角色选项
@@ -317,7 +318,7 @@ const addRow = () => {
 // 编辑
 const handleEdit = (row: User.RuleForm) => {
   handleType.value = 'edit'
-  mainRow = {
+  mainRow.value = {
     userId: row.userId,
     deptId: row.deptId,
     username: row.username,

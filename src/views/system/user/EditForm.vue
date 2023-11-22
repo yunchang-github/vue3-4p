@@ -3,6 +3,7 @@
     v-model="dialogFormVisible"
     :title="handleType == 'add' ? '添加用户' : '编辑用户'"
     width="680px"
+    :before-close="closeDialog"
   >
     <el-form :model="form" ref="ruleFormRef" :rules="rules" label-width="100px">
       <el-row>
@@ -23,11 +24,12 @@
               style="width: 100%"
               filterable
             >
-              <template #default="{ data: { label,children } }">
+              <template #default="{ data: { label, children } }">
                 {{ label }}
                 <span style="color: gray" v-if="children && children.length"
-                  >({{ children.length }})</span>
-                </template>
+                  >({{ children.length }})</span
+                >
+              </template>
             </el-tree-select>
           </el-form-item>
         </el-col>
@@ -43,19 +45,26 @@
         </el-col>
         <el-col :span="12" v-if="form.userId === undefined">
           <el-form-item label="用户名称" prop="username">
-            <el-input v-model="form.username" placeholder="请输入用户名称" maxlength="30" autocomplete="off" clearable />
+            <el-input
+              v-model="form.username"
+              placeholder="请输入用户名称"
+              maxlength="30"
+              autocomplete="off"
+              clearable
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12" v-if="form.userId === undefined">
-          <el-form-item label="用户密码" prop="password" >
-            <el-input 
-              v-model="form.password" 
+          <el-form-item label="用户密码" prop="password">
+            <el-input
+              v-model="form.password"
               placeholder="请输入用户密码"
               type="password"
               maxlength="20"
               show-password
               autocomplete="off"
-              clearable />
+              clearable
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -127,32 +136,32 @@
 <script lang="ts" setup name="editFormDialog">
 import { addFun, editFun } from '@/api/modules/system/user'
 import { User } from '@/api/interface/system'
-import { reactive, ref, watch,computed } from 'vue'
+import { reactive, ref, watch, computed } from 'vue'
 import { showStatus } from '@/utils/serviceDict'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { useAuthStore } from "@/stores/modules/auth";
+import { useAuthStore } from '@/stores/modules/auth'
 // 传入的所有属性简单限制
 // 表单接口限制类型
 interface Tree {
   [key: string]: any
-};
+}
 
 interface addOrEditProps {
   handleType: string
   formData: User.RuleForm
-  treeData: Tree[],
-  postOptions:[],
-  roleOptions:[]
-};
+  treeData: Tree[]
+  postOptions: []
+  roleOptions: []
+}
 
-const sexOptions=[
-  {label:"男",value:"1"},
-  {label:"女",value:"2"},
-  {label:"未知",value:"3"},
-];
-const authStore = useAuthStore();
-const companyId = computed(() => authStore.companyId);
+const sexOptions = [
+  { label: '男', value: '1' },
+  { label: '女', value: '2' },
+  { label: '未知', value: '3' }
+]
+const authStore = useAuthStore()
+const companyId = computed(() => authStore.companyId)
 // 传入的prop  使用 props.key
 const props = withDefaults(defineProps<addOrEditProps>(), {
   handleType: 'add'
@@ -231,8 +240,8 @@ let form = reactive<User.RuleForm>({
 watch(
   () => props.formData,
   () => {
-    if(props.handleType=='edit'){
-      form=props.formData
+    if (props.handleType == 'edit') {
+      Object.assign(form, props.formData)
     }
   }
 )
@@ -244,7 +253,22 @@ const filterNode = (value: string, data: Tree) => {
 // 关闭弹窗
 const closeDialog = () => {
   // 清除数据
+  resetFormData()
   dialogFormVisible.value = false
+}
+// 重置表单数据
+const resetFormData = () => {
+  form.userId = undefined
+  form.deptId = undefined
+  form.username = ''
+  form.nickName = ''
+  form.password = ''
+  form.phone = ''
+  form.email = ''
+  form.sex = ''
+  form.status = '0'
+  form.postIds = []
+  form.roleIds = []
 }
 
 // 提交表单

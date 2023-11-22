@@ -1,3 +1,6 @@
+export interface ObjectLimit {
+  [key: string]: string[];
+}
 // 菜单模块
 export namespace Menu {
   // 请求参数
@@ -19,17 +22,17 @@ export namespace Menu {
     children?: ResMenuList[];
   }
   export interface RuleForm {
-    menuId: number,
-    parentId?: number,
-    menuName: string,
-    icon: string,
-    menuType: string,
-    path: string,
-    orderTag: string,
-    isFrame: string,
-    isCache: string,
-    visible: string,
-    status: string,
+    menuId: number;
+    parentId?: number;
+    menuName: string;
+    icon: string;
+    menuType: string;
+    path: string;
+    orderTag: string;
+    isFrame: string;
+    isCache: string;
+    visible: string;
+    status: string;
   }
 }
 
@@ -37,10 +40,10 @@ export namespace Menu {
 export namespace User {
   // 请求参数
   export interface ReqParams {
-    username?: string | undefined,
-    phone?: string | undefined,
+    username?: string | undefined;
+    phone?: string | undefined;
     status?: number | undefined
-    deptId?: number | undefined,
+    deptId?: number | undefined;
     pageNum: number;
     pageSize: number;
   }
@@ -50,17 +53,17 @@ export namespace User {
     username: string;
   }
   export interface RuleForm {
-    userId?: string,
-    nickName: string,
-    deptId?: number,
-    phone: string,
-    email: string,
-    username: string,
-    password: string,
-    sex?: string,
-    status: string,
-    postIds?: string[],
-    roleIds?: string[],
+    userId?: string;
+    nickName: string;
+    deptId?: number;
+    phone: string;
+    email: string;
+    username: string;
+    password: string;
+    sex?: string;
+    status: string;
+    postIds?: string[];
+    roleIds?: string[];
   }
 }
 
@@ -68,10 +71,10 @@ export namespace User {
 export namespace Dept {
   // 请求参数
   export interface ReqParams {
-    username?: string | undefined,
-    phone?: string | undefined,
+    username?: string | undefined;
+    phone?: string | undefined;
     status?: number | undefined
-    deptId?: number | undefined,
+    deptId?: number | undefined;
     pageNum: number;
     pageSize: number;
   }
@@ -87,16 +90,63 @@ export namespace Dept {
     username: string;
   }
   export interface RuleForm {
-    userId?: string,
-    nickName: string,
-    deptId?: number | undefined,
-    phone: string,
-    email: string,
-    username: string,
-    password: string,
-    sex?: string,
-    status: string,
-    postIds?: string[],
-    roleIds?: string[],
+    userId?: string;
+    nickName: string;
+    deptId?: number | undefined;
+    phone: string;
+    email: string;
+    username: string;
+    password: string;
+    sex?: string;
+    status: string;
+    postIds?: string[];
+    roleIds?: string[];
   }
+}
+
+// 角色模块
+export namespace Role {
+  // 请求参数
+  export interface ReqParams {
+    roleName?: string | undefined;
+    roleKey?: string | undefined;
+    status?: number | undefined;
+    params?: ObjectLimit | undefined;
+    pageNum: number;
+    pageSize: number;
+  }
+  // 树状
+  export interface treeData {
+    id: number;
+    label:string;
+    children?:treeData[]
+  }
+  // 新增编辑数据
+  export interface RuleForm {
+    roleName: string;
+    roleKey: string;
+    orderTag:number;
+    status:string;
+    remarks:string;
+    dataScope?:string;
+    menuIds?: string[];
+    deptIds?: string[];
+    menuCheckStrictly?:boolean;
+    deptCheckStrictly?:boolean;
+    companyId?:string;
+  }
+  export interface ResRoleList {
+    roleId: number;
+    roleName: string;
+    roleKey: undefined | string;
+    orderTag: number;
+    status: string;
+    dataScope?:string;
+    menuIds?: string[];
+    deptIds?: string[];
+    menuCheckStrictly?:boolean;
+    deptCheckStrictly?:boolean;
+    remarks: string;
+  }
+
 }

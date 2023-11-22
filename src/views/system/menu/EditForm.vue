@@ -1,12 +1,29 @@
 <template>
-  <el-dialog v-model="dialogFormVisible" :title="handleType == 'add' ? '添加菜单' : '编辑菜单'" width="680px">
+  <el-dialog
+    v-model="dialogFormVisible"
+    :title="handleType == 'add' ? '添加菜单' : '编辑菜单'"
+    width="680px"
+  >
     <el-form :model="form" ref="ruleFormRef" :rules="rules" label-width="100px">
       <el-row>
         <el-col :span="24">
           <el-form-item label="上级菜单" prop="parentId">
-            <el-tree-select node-key="menuId" v-model="form.parentId" :default-expanded-keys="[0]" :check-strictly="true" :data="treeData" :props="treeProps" :filter-node-method="filterNode" style="width:100%" filterable>
-              <template #default="{ data: { menuName,children } }">
-                {{ menuName }}<span style="color: gray" v-if="children.length">({{children.length}})</span></template
+            <el-tree-select
+              node-key="menuId"
+              v-model="form.parentId"
+              :default-expanded-keys="[0]"
+              :check-strictly="true"
+              :data="treeData"
+              :props="treeProps"
+              :filter-node-method="filterNode"
+              style="width: 100%"
+              filterable
+            >
+              <template #default="{ data: { menuName, children } }">
+                {{ menuName
+                }}<span style="color: gray" v-if="children.length"
+                  >({{ children.length }})</span
+                ></template
               >
             </el-tree-select>
           </el-form-item>
@@ -22,19 +39,15 @@
         </el-col>
         <el-col :span="24">
           <el-form-item label="菜单图标" prop="icon">
-            <el-popover
-              placement="bottom-start"
-              width="540"
-              trigger="click"
-            >
+            <el-popover placement="bottom-start" width="540" trigger="click">
               <!-- <IconSelect ref="iconSelect" @selected="selected" />-->
-              <SelectIcon v-model:icon-value="form.icon"/>
+              <SelectIcon v-model:icon-value="form.icon" />
               <template #reference>
                 <el-input v-model="form.icon" placeholder="点击选择图标" readonly>
-                   <template #prefix>
-                    <component :is="form.icon" style="width:18px;"></component>
+                  <template #prefix>
+                    <component :is="form.icon" style="width: 18px"></component>
                   </template>
-                </el-input> 
+                </el-input>
               </template>
             </el-popover>
           </el-form-item>
@@ -55,7 +68,7 @@
               <el-tooltip content="选择是外链则路由地址需要以`http(s)://`开头" placement="top">
                 <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
-              <span style="display:inline-block;">是否外链</span>
+              <span style="display: inline-block">是否外链</span>
             </template>
             <el-radio-group v-model="form.isFrame">
               <el-radio label="0">是</el-radio>
@@ -148,12 +161,9 @@
               显示状态
             </template>
             <el-radio-group v-model="form.visible">
-              <el-radio
-                v-for="dict in showStatus"
-                :key="dict.value"
-                :label="dict.value"
-                >{{ dict.label }}</el-radio
-              >
+              <el-radio v-for="dict in showStatus" :key="dict.value" :label="dict.value">{{
+                dict.label
+              }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -166,12 +176,9 @@
               菜单状态
             </template>
             <el-radio-group v-model="form.status">
-              <el-radio
-                v-for="dict in commonStatus"
-                :key="dict.value"
-                :label="dict.value"
-                >{{ dict.label }}</el-radio
-              >
+              <el-radio v-for="dict in commonStatus" :key="dict.value" :label="dict.value">{{
+                dict.label
+              }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -188,9 +195,9 @@
 
 <script lang="ts" setup name="financeSkuRelationDialog">
 import { addFun, editFun } from '@/api/modules/system/menu'
-import { commonStatus,showStatus } from '@/utils/serviceDict'
+import { commonStatus, showStatus } from '@/utils/serviceDict'
 import SelectIcon from '@/components/SelectIcon/index.vue'
-import { Menu } from "@/api/interface/system";
+import { Menu } from '@/api/interface/system'
 import { reactive, ref, watch } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
@@ -200,13 +207,13 @@ interface Tree {
   [key: string]: any
 }
 interface addOrEditProps {
-  handleType: string;
-  formData: Menu.RuleForm;
-  treeData:Tree[]
+  handleType: string
+  formData: Menu.RuleForm
+  treeData: Tree[]
 }
 // 传入的prop  使用 props.key
 const props = withDefaults(defineProps<addOrEditProps>(), {
-  handleType: 'add',
+  handleType: 'add'
 })
 const treeProps = {
   children: 'children',
@@ -240,24 +247,24 @@ const rules = reactive<FormRules<Menu.RuleForm>>({
       message: '请输入路由地址',
       trigger: 'blur'
     }
-  ],
+  ]
 })
 const dialogFormVisible = ref(false)
 
 // 表单限制 elementui
 const ruleFormRef = ref<FormInstance>()
 let form = reactive<Menu.RuleForm>({
-    menuId: 0,
-    parentId: 0,
-    menuName: "",
-    icon: "",
-    menuType: "M",
-    orderTag: "",
-    isFrame: "1",
-    path:"",
-    isCache: "",
-    visible: "0",
-    status: "0",
+  menuId: 0,
+  parentId: 0,
+  menuName: '',
+  icon: '',
+  menuType: 'M',
+  orderTag: '',
+  isFrame: '1',
+  path: '',
+  isCache: '',
+  visible: '0',
+  status: '0'
 })
 //
 watch(
@@ -274,12 +281,9 @@ const filterNode = (value: string, data: Tree) => {
 // 初始化表格数据
 const handleInitFormData = () => {
   // 编辑初始化数据
-  if(props.handleType=='edit'){
-    // form.id = props.formData.menuId
-    // form.sku = props.formData.sku
-    // form.shopName = props.formData.shopName
-    // !form.id && delete form.id
-  }else{
+  if (props.handleType == 'edit') {
+    Object.assign(form, props.formData)
+  } else {
     form.parentId = props.formData.parentId
   }
 }
@@ -287,9 +291,22 @@ const handleInitFormData = () => {
 // 关闭弹窗
 const closeDialog = () => {
   // 清除数据
+  resetFormData()
   dialogFormVisible.value = false
 }
-
+const resetFormData = () => {
+  form.menuId = 0
+  form.parentId = 0
+  form.menuName = ''
+  form.icon = ''
+  form.menuType = 'M'
+  form.orderTag = ''
+  form.isFrame = '1'
+  form.path = ''
+  form.isCache = ''
+  form.visible = '0'
+  form.status = '0'
+}
 // 提交表单
 const saveDialog = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
@@ -299,7 +316,7 @@ const saveDialog = async (formEl: FormInstance | undefined) => {
     if (props.handleType == 'add') {
       res = await addFun(form)
     } else {
-      console.log("修改提交的数据",form)
+      console.log('修改提交的数据', form)
       res = await editFun(form)
     }
     ElMessage.success(res)
@@ -312,8 +329,8 @@ const saveDialog = async (formEl: FormInstance | undefined) => {
 defineExpose({ dialogFormVisible })
 </script>
 <style scoped>
-.el-overlay-dialog .el-form-item__label .el-icon{
-  top:8px;
-  right:3px;
+.el-overlay-dialog .el-form-item__label .el-icon {
+  top: 8px;
+  right: 3px;
 }
 </style>
