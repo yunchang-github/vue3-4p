@@ -76,10 +76,10 @@
         v-hasPermi="['system:role:remove']"
         ><Delete style="width: 1em; height: 1em; margin-right: 8px" />删除</el-button
       >
-      <el-button type="warning" plain v-hasPermi="['system:role:export']"
+      <el-button type="warning" plain v-hasPermi="['system:role:export']" @click="handleExport"
         ><Download style="width: 1em; height: 1em; margin-right: 8px" />导出</el-button
       >
-    </div>
+    </div> 
     <el-table
       v-loading="loading"
       v-if="refreshTable"
@@ -172,24 +172,27 @@
       @render-table="renderTable"
       ref="AddOrEditRef"
       :handle-type="handleType"
-      :form-data="mainRow"
+      :form-data="mainRow || {}"
       :tree-data="treeData"
     />
     <!-- 数据权限弹窗 -->
     <DataScope
       @render-table="renderTable"
       ref="DataScopeRef"
-      :form-data="tableRow"
+      :form-data="tableRow || {}"
       :tree-data="deptTreeData"
     />
+    <!-- 导出组件 -->
+    <FileExport ref="fileExportRef" @saveExportDialog="saveExportDialog" />
   </div>
 </template>
 
 <script lang="ts" setup name="role">
 import AddOrEdit from './addAndEdit.vue'
 import DataScope from './dataScope.vue'
+import FileExport from '@/components/FileExport/index.vue'
 import { Role } from '@/api/interface/system'
-import { getRoleList, changeRoleStatus, delRole } from '@/api/modules/system/role'
+import { getRoleList, changeRoleStatus, delRole,downRoleData } from '@/api/modules/system/role'
 import { treeselect as menuTreeselect, roleMenuTreeselect } from '@/api/modules/system/menu'
 import {
   treeselect as deptTreeselect,
@@ -275,12 +278,53 @@ const tableColumns = [
   { key: 4, label: `状态`, prop: 'status', visible: true },
   { key: 5, label: `创建时间`, prop: 'addTime', visible: true }
 ]
+interface Column {
+  value: string;
+  label: string;
+  isChecked: boolean;
+}
+let column:Column[]=[]
 onMounted(() => {
+  column = tableColumns.map((opt) => {
+    return {
+      label: opt.label,
+      value: opt.prop,
+      isChecked: false
+    };
+  })
   isShowBtn.value = roles?.indexOf('admin') !== -1
   getMenuTreeselect()
   getDeptTreeselect()
   renderTable()
 })
+// 下载内容
+const fileExportRef = ref()
+const handleExport = () => {
+  fileExportRef.value.acceptParams({pageName:'role',columns:column, isWMS: false })
+}
+//导出数据
+const saveExportDialog = (columnList:Column[]) => {
+  let _data = {
+    ...formInline,
+    sortColumn: null,
+    sortType: null,
+  };
+  let date = Array.isArray(dateRange.value) ? dateRange.value : []
+    if (date.length > 0) {
+      _data['params'] = {
+        beginTime: dateRange.value[0],
+        endTime: dateRange.value[1]
+      }
+    }
+  downRoleData(
+    `role_${new Date().getTime()}.xlsx`,
+    _data,
+    {
+      columnList,
+      idList: multipleSelection.value.map((opt) => opt.roleId)
+    }
+  );
+}
 /** 查询菜单树结构 */
 const getMenuTreeselect = () => {
   menuTreeselect().then((response) => {

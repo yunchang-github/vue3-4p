@@ -40,6 +40,21 @@
             />
           </el-select>
         </el-form-item>
+        <el-form-item label="">
+         <el-date-picker
+          v-model="lastDate"
+          clearable
+          type="daterange"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+          style="width: 260px"
+          format="YYYY-MM-DD"
+          value-format="YYYY-MM-DD"
+          :shortcuts="shortcuts"
+        />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="renderTable"
             ><el-icon><Search /></el-icon>搜索</el-button
@@ -50,19 +65,24 @@
         </el-form-item>
       </el-form>
       <div style="margin-bottom: 10px">
-        <el-button :icon="Plus" type="primary" plain @click="addRow" v-hasPermi="['system:user:add']">新增</el-button>
+        <el-button type="primary" plain @click="addRow" v-hasPermi="['system:user:add']"
+          ><Plus style="width: 1em; height: 1em; margin-right: 8px" />新增</el-button
+        >
         <!-- <el-button :icon="EditPen" type="success" plain v-hasPermi="['system:user:edit']">修改</el-button> -->
         <el-button
-          :icon="Delete"
           type="danger"
           :disabled="multipleSelection.length == 0"
           plain
           @click="batchDelete"
           v-hasPermi="['system:user:remove']"
-          >删除</el-button
+          ><Delete style="width: 1em; height: 1em; margin-right: 8px" />删除</el-button
         >
-        <el-button :icon="Upload" type="info" plain @click="batchAdd" v-hasPermi="['system:user:import']">导入</el-button>
-        <el-button :icon="Download" type="warning" plain v-hasPermi="['system:user:export']">导出</el-button>
+        <el-button type="info" plain @click="batchAdd" v-hasPermi="['system:user:import']"
+          ><Upload style="width: 1em; height: 1em; margin-right: 8px" />导入</el-button
+        >
+        <el-button type="warning" @click="handleExport" plain v-hasPermi="['system:user:export']"
+          ><Download style="width: 1em; height: 1em; margin-right: 8px" />导出</el-button
+        >
       </div>
       <el-table
         v-loading="loading"
@@ -99,7 +119,11 @@
         </el-table-column>
         <el-table-column label="操作" width="280">
           <template #default="{ row }">
-            <el-button type="primary" text @click="handleEdit(row)" v-hasPermi="['system:user:edit']"
+            <el-button
+              type="primary"
+              text
+              @click="handleEdit(row)"
+              v-hasPermi="['system:user:edit']"
               ><el-icon><Tools /></el-icon>修改</el-button
             >
             <el-button
@@ -110,7 +134,10 @@
               :disabled="row.userId == companyId"
               ><el-icon><Delete /></el-icon>删除</el-button
             >
-            <el-dropdown @command="(command) => handleCommand(command, row)" v-hasPermi="['system:user:resetPwd', 'system:user:edit']">
+            <el-dropdown
+              @command="(command) => handleCommand(command, row)"
+              v-hasPermi="['system:user:resetPwd', 'system:user:edit']"
+            >
               <span class="el-dropdown-link">
                 <el-button type="primary" text
                   ><el-icon><DArrowRight /></el-icon>更多</el-button
@@ -118,15 +145,15 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item :icon="Setting" command="handleResetPwd" v-hasPermi="['system:user:resetPwd']"
-                    >重置密码</el-dropdown-item
+                  <el-dropdown-item command="handleResetPwd"
+                    ><Setting
+                      style="width: 1em; height: 1em; margin-right: 8px"
+                    />重置密码</el-dropdown-item
                   >
-                  <el-dropdown-item
-                    :icon="CircleCheck"
-                    command="handleAuthRole"
-                    :disabled="row.userId == companyId" 
-                    v-hasPermi="['system:user:edit']"
-                    >分配角色</el-dropdown-item
+                  <el-dropdown-item command="handleAuthRole" :disabled="row.userId == companyId"
+                    ><CircleCheck
+                      style="width: 1em; height: 1em; margin-right: 8px"
+                    />分配角色</el-dropdown-item
                   >
                 </el-dropdown-menu>
               </template>
@@ -139,7 +166,7 @@
         v-model:current-page="pageNum"
         v-model:page-size="pageSize"
         :page-sizes="[100, 200, 300, 400]"
-        :small="small"
+        small
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
         @size-change="handleSizeChange"
@@ -158,11 +185,14 @@
     />
     <!-- 导入组件 -->
     <ImportExcel ref="importRef" />
+    <!-- 导出组件 -->
+    <FileExport ref="fileExportRef" @saveExportDialog="saveExportDialog" />
   </div>
 </template>
 
 <script lang="ts" setup name="menu">
 import ImportExcel from '@/components/ImportExcel/index.vue'
+import FileExport from '@/components/FileExport/index.vue'
 import { treeselect } from '@/api/modules/system/dept'
 import { User } from '@/api/interface/system'
 import {
@@ -174,10 +204,10 @@ import {
   changeUserStatus,
   resetUserPwd
 } from '@/api/modules/system/user'
-import { encrypt } from "@/utils/jsencrypt";
+import { encrypt } from '@/utils/jsencrypt'
 import TreeFilter from '@/components/TreeFilter/index.vue'
 import AddOrEdit from './EditForm.vue'
-import { ref,Ref, reactive, onMounted, computed } from 'vue'
+import { ref, Ref, reactive, onMounted, computed } from 'vue'
 import { useAuthStore } from '@/stores/modules/auth'
 import { ElTable, ElMessageBox, ElMessage } from 'element-plus'
 interface TreeData {
@@ -185,6 +215,7 @@ interface TreeData {
   label: string
   children?: TreeData[]
 }
+
 const initParam = reactive({ deptId: 0 })
 const statusOptions = [
   { label: '正常', value: 0 },
@@ -192,7 +223,37 @@ const statusOptions = [
 ]
 const authStore = useAuthStore()
 const companyId = computed(() => authStore.companyId)
-
+// 时间范围
+const lastDate=ref([])
+const shortcuts = [
+  {
+    text: '最近一周',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+      return [start, end]
+    },
+  },
+  {
+    text: '最近一个月',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+      return [start, end]
+    },
+  },
+  {
+    text: '最近三个月',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      return [start, end]
+    },
+  },
+]
 const loading = ref(false)
 // 刷新
 const refreshTable = ref(true)
@@ -209,7 +270,7 @@ const formInline = reactive({
   phone: undefined,
   status: undefined
 })
-let mainRow:Ref<User.ResUserList | null> = ref(null)
+let mainRow: Ref<User.ResUserList | {}> = ref({})
 // 岗位选项
 let postOptions = []
 // 角色选项
@@ -218,14 +279,27 @@ let roleOptions = []
 let treeData: TreeData[] = []
 // 表格列`
 const tableColumns = [
-  { key: 1, label: `用户名称`, prop: 'username', visible: true },
+  { key: 1, label: `用户名称`, prop: 'username', visible: true,isChecked:false },
   { key: 2, label: `用户昵称`, prop: 'nickName', visible: true },
   { key: 3, label: `部门`, prop: 'deptName', visible: true },
   { key: 4, label: `手机号码`, prop: 'phone', visible: true },
   { key: 5, label: `状态`, prop: 'status', visible: true },
   { key: 6, label: `创建时间`, prop: 'addTime', visible: true }
 ]
+interface Column {
+  value: string;
+  label: string;
+  isChecked: boolean;
+}
+let column:Column[]=[]
 onMounted(() => {
+  column = tableColumns.map((opt) => {
+    return {
+      label: opt.label,
+      value: opt.prop,
+      isChecked: false
+    } ;
+  })
   renderTable()
   getPostOptions('')
 })
@@ -245,6 +319,35 @@ const batchAdd = () => {
   }
   importRef.value.acceptParams(params)
 }
+// 下载内容
+const fileExportRef = ref()
+const handleExport = () => {
+  fileExportRef.value.acceptParams({pageName:'user',columns:column, isWMS: false })
+}
+//导出数据
+const saveExportDialog = (columnList) => {
+  let _data = {
+    ...formInline,
+    // columnList,
+    sortColumn: null,
+    sortType: null,
+  };
+  let date = Array.isArray(lastDate.value) ? lastDate.value : []
+    if (date.length > 0) {
+      _data['params'] = {
+        beginTime: lastDate.value[0],
+        endTime: lastDate.value[1]
+      }
+    }
+  exportUserInfo(
+    `user_${new Date().getTime()}.xlsx`,
+    _data,
+    {
+      columnList,
+      idList: multipleSelection.value.map((opt) => opt.userId)
+    }
+  );
+}
 // 用户状态修改
 const handleStatusChange = (row) => {
   let text = row.status === '0' ? '启用' : '停用'
@@ -262,7 +365,7 @@ const handleStatusChange = (row) => {
     })
 }
 // 更多操作触发
-const handleCommand = (command:string, row:User.RuleForm) => {
+const handleCommand = (command: string, row: User.RuleForm) => {
   switch (command) {
     case 'handleResetPwd':
       handleResetPwd(row)
@@ -275,24 +378,23 @@ const handleCommand = (command:string, row:User.RuleForm) => {
   }
 }
 // 重置密码
-const handleResetPwd=(row:User.RuleForm)=>{
-   ElMessageBox.prompt(`请输入"${row.username}"的新密码`, '提示', {
+const handleResetPwd = (row: User.RuleForm) => {
+  ElMessageBox.prompt(`请输入"${row.username}"的新密码`, '提示', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
     inputPattern: /^.{5,20}$/,
-    inputErrorMessage: "用户密码长度必须介于 5 和 20 之间",
+    inputErrorMessage: '用户密码长度必须介于 5 和 20 之间'
   })
     .then(({ value }) => {
-     // 确认提交
-      resetUserPwd(row.userId, encrypt(value)).then(()=>{
-        ElMessage.success('操作成功! 新密码是'+value)
+      // 确认提交
+      resetUserPwd(row.userId, encrypt(value)).then(() => {
+        ElMessage.success('操作成功! 新密码是' + value)
       })
     })
-    .catch(() => {
-    })
+    .catch(() => {})
 }
 // 分配角色
-const handleAuthRole=(row:User.RuleForm)=>{
+const handleAuthRole = (row: User.RuleForm) => {
   console.log(row)
 }
 
@@ -394,12 +496,20 @@ const renderTable = () => {
 const getTableData = async () => {
   loading.value = true
   try {
-    let { data } = await getUserList({
-      ...formInline,
+    let _data={
+       ...formInline,
       deptId: initParam.deptId,
       pageNum: pageNum.value,
-      pageSize: pageSize.value
-    })
+      pageSize: pageSize.value,
+    }
+    let date = Array.isArray(lastDate.value) ? lastDate.value : []
+    if (date.length > 0) {
+      _data['params'] = {
+        beginTime: lastDate.value[0],
+        endTime: lastDate.value[1]
+      }
+    }
+    let { data } = await getUserList(_data)
     tableData = data.list
     total.value = data.total
     loading.value = false

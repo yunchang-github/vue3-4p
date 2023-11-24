@@ -45,7 +45,7 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="closeDialog">Cancel</el-button>
+        <el-button @click="closeDialog"> Cancel </el-button>
         <el-button type="primary" @click="saveDialog(ruleFormRef)"> Confirm </el-button>
       </span>
     </template>
@@ -126,7 +126,7 @@ let form = reactive<Role.RuleForm>({
 watch(
   () => props.formData,
   () => {
-    if (dialogFormVisible.value) {
+    if (dialogFormVisible.value && props.formData) {
       // 处理初始选中
       Object.assign(form, props.formData)
       if (form?.deptIds) {

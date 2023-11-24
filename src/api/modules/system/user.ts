@@ -80,14 +80,15 @@ export function delUser(userId:any) {
 }
 
 // 导出
-export const exportUserInfo = (fileName:string) => {
+export const exportUserInfo = (fileName:string,params={},data={}) => {
   return http.request({
     url: PORT1 +"/user/export",
     method: "post",
     fileName,
-    // params,
+    params,
     responseType: "blob",
-    // data
+    types: "json",
+    data
   });
 };
 

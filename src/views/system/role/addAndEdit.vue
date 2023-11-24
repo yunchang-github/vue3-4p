@@ -127,7 +127,7 @@ let form = reactive<Role.RuleForm>({
 })
 //
 watch(() => props.formData, () => {
-  if (props.handleType == 'edit' && dialogFormVisible.value) {
+  if (props.handleType == 'edit' && dialogFormVisible.value && props.formData) {
     // 处理初始选中
     Object.assign(form, props.formData)
     if (form?.menuIds) {

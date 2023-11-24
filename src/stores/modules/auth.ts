@@ -1,8 +1,26 @@
 import { defineStore } from "pinia";
+// import auth from '@/plugins/auth'
 import { AuthState } from "@/stores/interface";
 import { getAuthButtonListApi, getAuthMenuListApi } from "@/api/modules/login";
 import { getFlatMenuList, getShowMenuList, getAllBreadcrumbList, handleInitRoutes } from "@/utils";
+// import { dynamicRoutes } from "@/routers/modules/staticRouter";
 
+// 动态路由遍历，验证是否具备权限
+// export function filterDynamicRoutes(routes) {
+//   let res = []
+//   routes.forEach(route => {
+//     if (route.permissions) {
+//       if (auth.hasPermiOr(route.permissions)) {
+//         res.push(route)
+//       }
+//     } else if (route.roles) {
+//       if (auth.hasRoleOr(route.roles)) {
+//         res.push(route)
+//       }
+//     }
+//   })
+//   return res
+// }
 export const useAuthStore = defineStore({
   id: "4pbooks-auth",
   state: (): AuthState => ({
@@ -76,6 +94,9 @@ export const useAuthStore = defineStore({
           })
         }
       })
+      // 处理权限详情页面
+      // const asyncRoutes = filterDynamicRoutes(dynamicRoutes);
+      // console.log('动态菜单',asyncRoutes)
       this.authMenuList = tempData
     },
     // Set RouteName

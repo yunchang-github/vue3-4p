@@ -58,3 +58,15 @@ export const delRole = (roleIds:string) => {
     isHideLoading: true,
   });
 };
+//数据下载
+export const downRoleData = (fileName:string,params={},data={}) =>{
+  return http.request({
+    url: PORT1 +"/systemRole/export",
+    method: "post",
+    fileName,
+    params,
+    responseType: "blob",
+    types:'json',
+    data
+  });
+}

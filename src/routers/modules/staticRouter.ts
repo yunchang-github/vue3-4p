@@ -34,7 +34,81 @@ export const staticRouter: RouteRecordRaw[] = [
     children: []
   }
 ];
-
+// 动态路由，基于用户权限动态去加载
+export const dynamicRoutes: RouteRecordRaw[] = [
+  {
+    path: '/system/user-auth',
+    component: () => import("@/layouts/index.vue"),
+    hidden: true,
+    permissions: ['system:user:edit'],
+    children: [
+      {
+        path: 'role/:userId(\\d+)',
+        component: () => import('@/views/system/user/authRole'),
+        name: 'AuthRole',
+        meta: { title: '分配角色', activeMenu: '/system/user' }
+      }
+    ]
+  },
+  // {
+  //   path: '/system/role-auth',
+  //   component: Layout,
+  //   hidden: true,
+  //   permissions: ['system:role:edit'],
+  //   children: [
+  //     {
+  //       path: 'user/:roleId(\\d+)',
+  //       component: () => import('@/views/system/role/authUser'),
+  //       name: 'AuthUser',
+  //       meta: { title: '分配用户', activeMenu: '/system/role' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/system/dict-data',
+  //   component: Layout,
+  //   hidden: true,
+  //   permissions: ['system:dict:list'],
+  //   children: [
+  //     {
+  //       path: 'index/:dictId(\\d+)',
+  //       component: () => import('@/views/system/dict/data'),
+  //       name: 'Data',
+  //       meta: { title: '字典数据', activeMenu: '/system/dict' }
+  //     }
+  //   ]
+  // },
+  // // 透明标签退回审核  
+  // {
+  //   path: '/otherFunctions/transparentLabels-examine',
+  //   component: Layout,
+  //   hidden: true,
+  //   permissions: ['otherFunctions:transparentLabels:list'],
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/otherFunctions/transparentLabels/labelBackExamine'),
+  //       name: 'LabelBackExamine',
+  //       meta: { title: '透明标签退回审核', activeMenu: '/otherFunctions/transparentLabels' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   // 收货单明细
+  //   path: '/receipt-data',
+  //   component: Layout,
+  //   hidden: true,
+  //   permissions: ['enterWarehouse:receipt:detail'],
+  //   children: [
+  //     {
+  //       path: 'detail',
+  //       component: () => import('@/views/overseasWarehouse/enterWarehouse/receipt/detail'),
+  //       name: 'bulkShipment',
+  //       meta: { title: '收货', icon: '' }
+  //     }
+  //   ]
+  // },
+];
 /**
  * errorRouter (错误页面路由)
  */
