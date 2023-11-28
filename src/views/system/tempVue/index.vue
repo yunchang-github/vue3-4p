@@ -1,6 +1,6 @@
 <template>
-  <!-- card 背景颜色  table-box 高度处理-->
   <div class="card table-box">
+    <!-- card 背景颜色  table-box 高度处理-->
     <el-form class="search-form" :inline="true" :model="formInline" v-show="showSearch">
       <el-form-item label="菜单名称">
         <el-input v-model="formInline.menuName" placeholder="请输入" clearable />

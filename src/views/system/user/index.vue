@@ -129,7 +129,7 @@
             <el-button
               type="primary"
               text
-              @click="handleEdit(row)"
+              @click="handleDelete(row)"
               v-hasPermi="['system:user:remove']"
               :disabled="row.userId == companyId"
               ><el-icon><Delete /></el-icon>删除</el-button
@@ -210,6 +210,7 @@ import AddOrEdit from './EditForm.vue'
 import { ref, Ref, reactive, onMounted, computed } from 'vue'
 import { useAuthStore } from '@/stores/modules/auth'
 import { ElTable, ElMessageBox, ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 interface TreeData {
   id: number
   label: string
@@ -309,6 +310,7 @@ const multipleSelection = ref<User.RuleForm[]>([])
 const handleSelectionChange = (val: User.RuleForm[]) => {
   multipleSelection.value = val
 }
+const router=useRouter()
 // 上传下载
 const importRef = ref()
 const batchAdd = () => {
@@ -395,7 +397,7 @@ const handleResetPwd = (row: User.RuleForm) => {
 }
 // 分配角色
 const handleAuthRole = (row: User.RuleForm) => {
-  console.log(row)
+  router.push({path:"/system/user-auth/role",query:{userId:row.userId}});
 }
 
 // 处理下拉数据

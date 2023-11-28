@@ -49,10 +49,10 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="renderTable"
-          ><el-icon><Search /></el-icon>搜索</el-button
+          ><Search style="width: 1em; height: 1em; margin-right: 8px" />搜索</el-button
         >
-        <el-button @click="resetQuery"
-          ><el-icon><Refresh /></el-icon>重置</el-button
+        <el-button @click="resetQuery" 
+          ><Refresh style="width: 1em; height: 1em; margin-right: 8px" />重置</el-button
         >
       </el-form-item>
     </el-form>
@@ -201,6 +201,8 @@ import {
 import { ref,Ref,reactive, onMounted, computed } from 'vue'
 import { useAuthStore } from '@/stores/modules/auth'
 import { ElTable, ElMessageBox, ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
+const router=useRouter()
 const statusOptions = [
   { label: '正常', value: 0 },
   { label: '停用', value: 1 }
@@ -373,9 +375,9 @@ const handleCommand = (command: string, row: Role.ResRoleList) => {
       break
   }
 }
-// 分配角色
+// 分配用户
 const handleAuthRole = (row: Role.ResRoleList) => {
-  console.log(row)
+  router.push({path:"/system/role-auth/user",query:{roleId:row.roleId}});
 }
 const handleType = ref('add')
 // 使用ref修改子组件的数据  子组件中一定要使用 defineExpose({ dialogFormVisible }); 将数据暴露出去

@@ -10,7 +10,7 @@ import router from "@/routers";
 import qs from "qs";
 
 export interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
-  isHideLoading?: boolean;
+  isShowGlobelLoading?: boolean;
 }
 
 function tansParams(params: any) {
@@ -58,8 +58,8 @@ class RequestHttp {
       (config: CustomAxiosRequestConfig) => {
         const userStore = useUserStore();
         const isCancelUseToken=config?.isCancelUseToken ? true: false
-        // 当前请求不需要显示 loading，在 api 服务中通过指定的第三个参数: { isHideLoading: true } 来控制
-        config.isHideLoading || showFullScreenLoading();
+        // 当前请求需要显示 loading，在 api 服务中通过指定的第三个参数: { isShowGlobelLoading: true } 来控制
+        config.isShowGlobelLoading && showFullScreenLoading();
         // 处理需要请求的接口
         if (!isCancelUseToken) {
           config.headers.set("Authorization", userStore.token);

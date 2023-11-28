@@ -9,7 +9,6 @@ export const getMenuList = (params: Menu.ReqParams) => {
   return http.request<Menu.ResMenuList[]>({
     method: "get",
     url: PORT1 + `/menu/list`,
-    isHideLoading: true,
     params
   });
 };
@@ -17,16 +16,14 @@ export const getMenuList = (params: Menu.ReqParams) => {
 export const treeselect = () => {
   return http.request({
     method: "get",
-    url: PORT1 + `/menu/treeselect`,
-    isHideLoading: true
+    url: PORT1 + `/menu/treeselect`
   });
 };
 
 export const deleteMenu = (menuId:string) => {
   return http.request({
     method: "delete",
-    url: PORT1 + '/menu/' + menuId,
-    isHideLoading: true,
+    url: PORT1 + '/menu/' + menuId
   });
 };
 
@@ -34,7 +31,6 @@ export const editFun = (data:Menu.RuleForm) => {
   return http.request({
     method: "put",
     url: PORT1 + `/menu`,
-    isHideLoading: true,
     data
   });
 };
@@ -43,7 +39,6 @@ export const addFun = (data:Menu.RuleForm) => {
   return http.request({
     method: "post",
     url: PORT1 + `/menu`,
-    isHideLoading: true,
     types:"json",
     data
   });
@@ -53,7 +48,6 @@ export const addFun = (data:Menu.RuleForm) => {
 export const roleMenuTreeselect = (roleId:string) => {
   return http.request({
     method: "get",
-    url: PORT1 + `/menu/roleMenuTreeselect/` + roleId,
-    isHideLoading: true
+    url: PORT1 + `/menu/roleMenuTreeselect/` + roleId
   });
 };

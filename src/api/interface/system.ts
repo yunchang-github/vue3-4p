@@ -52,6 +52,12 @@ export namespace User {
     userId: number;
     username: string;
   }
+   // 返回参数
+  export interface authRoleList {
+    userId: string;
+    username: string;
+    nickName: string;
+  }
   export interface RuleForm {
     userId?: string;
     nickName: string;
@@ -148,5 +154,9 @@ export namespace Role {
     deptCheckStrictly?:boolean;
     remarks: string;
   }
-
+  export interface roleAuth {
+    roleId: string,
+    username: string,
+    phone: string
+  }
 }

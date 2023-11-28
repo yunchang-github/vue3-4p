@@ -9,7 +9,6 @@ export const getReceiptList = (data: receipt.ReqParams) => {
   return http.request<ResPage<receipt.ResReceiptList>>({
     method: "post",
     url: PORT3 + `/storage/wmsInboundStockReceivingNote/selReceivingNoteInfo`,
-    isHideLoading: true,
     types:"json",
     data
   });

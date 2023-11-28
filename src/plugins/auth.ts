@@ -1,11 +1,9 @@
-import store from '@/store'
-
 import { useAuthStore } from "@/stores/modules/auth";
-const authStore = useAuthStore();
 
-function authPermission(permission) {
+function authPermission(permission: string): boolean {
+  const authStore = useAuthStore();
   const all_permission = "*:*:*";
-  const permissions = authStore.authButtonListGet
+  const permissions = authStore?.authButtonListGet;
   if (permission && permission.length > 0) {
     return permissions.some(v => {
       return all_permission === v || v === permission
@@ -15,9 +13,10 @@ function authPermission(permission) {
   }
 }
 
-function authRole(role) {
+function authRole(role: string): boolean {
+  const authStore = useAuthStore();
   const super_admin = "admin";
-  const roles = store.getters && store.getters.roles
+  const roles = authStore?.roles || []
   if (role && role.length > 0) {
     return roles.some(v => {
       return super_admin === v || v === role
@@ -27,37 +26,43 @@ function authRole(role) {
   }
 }
 
+function hasPermi(permission: string): boolean {
+  return authPermission(permission);
+}
+
+function hasPermiOr<T>(permissions: T[]): boolean {
+  return permissions.some(item => {
+    return authPermission(item)
+  })
+}
+
+function hasPermiAnd(permissions: string[]): boolean {
+  return permissions.every(item => {
+    return authPermission(item)
+  })
+}
+
+function hasRole(role: string): boolean {
+  return authRole(role);
+}
+
+function hasRoleOr<T>(roles: T[]): boolean {
+  return roles.some(item => {
+    return authRole(item)
+  })
+}
+
+function hasRoleAnd(roles: string[]): boolean {
+  return roles.every(item => {
+    return authRole(item)
+  })
+}
+
 export default {
-  // 验证用户是否具备某权限
-  hasPermi(permission) {
-    return authPermission(permission);
-  },
-  // 验证用户是否含有指定权限，只需包含其中一个
-  hasPermiOr(permissions) {
-    return permissions.some(item => {
-      return authPermission(item)
-    })
-  },
-  // 验证用户是否含有指定权限，必须全部拥有
-  hasPermiAnd(permissions) {
-    return permissions.every(item => {
-      return authPermission(item)
-    })
-  },
-  // 验证用户是否具备某角色
-  hasRole(role) {
-    return authRole(role);
-  },
-  // 验证用户是否含有指定角色，只需包含其中一个
-  hasRoleOr(roles) {
-    return roles.some(item => {
-      return authRole(item)
-    })
-  },
-  // 验证用户是否含有指定角色，必须全部拥有
-  hasRoleAnd(roles) {
-    return roles.every(item => {
-      return authRole(item)
-    })
-  }
+  hasPermi,
+  hasPermiOr,
+  hasPermiAnd,
+  hasRole,
+  hasRoleOr,
+  hasRoleAnd
 }

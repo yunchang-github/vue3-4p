@@ -11,6 +11,7 @@ export const loginApi = (data: Login.ReqLoginForm,deviceId:string) => {
     method: "post",
     params:data,
     isCancelUseToken:true,
+    isShowGlobelLoading:true,
     headers: {
       deviceId,
       Authorization: "Basic eWM6c2VjcmV0"
@@ -22,6 +23,7 @@ export const register = (data: Login.registerFrom) => {
   return http.request<Login.ResLogin>({
     url: PORT1 + "/system/register",
     isCancelUseToken:true,
+    isShowGlobelLoading:true,
     method: 'post',
     data
   })
@@ -31,7 +33,6 @@ export const checkUserName = (name:string) => {
   return http.request({
     method: "get",
     url: PORT1 + `/system/checkUserName`,
-    isHideLoading: true,
     params: {name}
   });
 };
@@ -40,7 +41,6 @@ export const getAuthButtonListApi = () => {
   return http.request<Login.AuthButtonList>({
     method: "get",
     url: PORT1 + `/system/selInfo`,
-    isHideLoading: true
   });
 };
 
@@ -49,7 +49,6 @@ export const getAuthMenuListApi = (domain:string) => {
   return http.request<Menu.MenuOptionsOld[]>({
     method: "get",
     url: PORT1 + `/system/selRouters`,
-    isHideLoading: true,
     params: {domain}
   });
 };
@@ -65,7 +64,6 @@ export const getCodeImg = (deviceId:string) => {
     },
     isCancelUseToken:true,
     responseType: 'blob',
-    isHideLoading: true,
     isNotDownFile:true
   });
 };
