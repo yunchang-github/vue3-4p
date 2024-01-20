@@ -96,7 +96,7 @@ export const useAuthStore = defineStore({
       })
       // 处理权限详情页面
       const asyncRoutes = filterDynamicRoutes(dynamicRoutes);
-      console.log(asyncRoutes)
+      // console.log(asyncRoutes)
       this.authMenuList = tempData.concat(asyncRoutes);
       // this.authMenuList = tempData;
     },

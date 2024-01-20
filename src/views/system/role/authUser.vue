@@ -75,12 +75,12 @@
 </template>
 
 <script lang="ts" setup>
-import { allocatedUserList, authUserCancelAll, authUserCancel } from '@/api/modules/system/role'
-import { Role } from '@/api/interface/system'
-import SelectUser from './selectUser.vue'
-import { useTabsStore } from '@/stores/modules/tabs'
-import { ref, reactive, onBeforeMount } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { allocatedUserList, authUserCancelAll, authUserCancel } from '@/api/modules/system/role';
+import { Role } from '@/api/interface/system';
+import SelectUser from './selectUser.vue';
+import { useTabsStore } from '@/stores/modules/tabs';
+import { ref, reactive, onBeforeMount } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
 const loading = ref(false)
 import { useRoute, useRouter } from 'vue-router'
 const tabStore = useTabsStore()

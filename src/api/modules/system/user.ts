@@ -116,3 +116,45 @@ export const BatchAddUser = (data: FormData) => {
     data
   });
 };
+
+// 查询用户个人信息
+export function getUserProfile() {
+  return http.request({
+    url: PORT1 + '/user/profile',
+    method: 'get'
+  })
+}
+
+// 修改用户个人信息
+export function updateUserProfile(data) {
+  return http.request({
+    url: PORT1 + '/user/profile',
+    method: 'put',
+    data,
+    // recordTitle:"修改用户个人信息",
+  })
+}
+
+// 用户密码重置
+export function updateUserPwd(oldPassword, newPassword) {
+  const data = {
+    oldPassword,
+    newPassword
+  }
+  return http.request({
+    url: PORT1 + '/user/profile/updatePwd',
+    method: 'put',
+    params: data,
+    // recordTitle:"用户密码重置"
+  })
+}
+
+// 用户头像上传
+export function uploadAvatar(data) {
+  return http.request({
+    url: PORT1 + '/user/avatar',
+    method: 'post',
+    data,
+    types:'file'
+  })
+}

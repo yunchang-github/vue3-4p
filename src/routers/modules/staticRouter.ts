@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import { HOME_URL, LOGIN_URL } from "@/config";
-
+import Layout from '@/layouts/index.vue'
 /**
  * staticRouter (静态路由)
  */
@@ -32,7 +32,21 @@ export const staticRouter: RouteRecordRaw[] = [
     // component: () => import("@/layouts/indexAsync.vue"),
     redirect: HOME_URL,
     children: []
-  }
+  },
+  {
+    path: '/user',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'profile',
+        component: () => import('@/views/system/user/profile/index.vue'),
+        name: 'Profile',
+        meta: { title: '个人中心', icon: 'user' }
+      }
+    ]
+  },
 ];
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [
