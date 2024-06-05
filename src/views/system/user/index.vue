@@ -193,6 +193,9 @@
 <script lang="ts" setup name="menu">
 import ImportExcel from '@/components/ImportExcel/index.vue'
 import FileExport from '@/components/FileExport/index.vue'
+import TreeFilter from '@/components/TreeFilter/index.vue'
+import AddOrEdit from './EditForm.vue'
+
 import { treeselect } from '@/api/modules/system/dept'
 import { User } from '@/api/interface/system'
 import {
@@ -205,8 +208,6 @@ import {
   resetUserPwd
 } from '@/api/modules/system/user'
 import { encrypt } from '@/utils/jsencrypt'
-import TreeFilter from '@/components/TreeFilter/index.vue'
-import AddOrEdit from './EditForm.vue'
 import { ref, Ref, reactive, onMounted, computed } from 'vue'
 import { useAuthStore } from '@/stores/modules/auth'
 import { ElTable, ElMessageBox, ElMessage } from 'element-plus'

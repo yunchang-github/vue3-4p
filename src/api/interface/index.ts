@@ -40,10 +40,10 @@ export namespace Login {
     rememberMe?: boolean;
   }
   export interface ResLogin {
-    access_token: string;
-    refresh_token:string;
-    realName:string;
-    expires_in:number;
+    accessToken: string;
+    // refresh_token:string;
+    // realName:string;
+    expiredIn:number;
   }
   export interface AuthButtonList {
     permissions: string[];
@@ -59,6 +59,7 @@ export namespace Login {
     username: string;
     password: string;
     confirmPassword?:string;
+    imageCode?:string;
   }
   export interface ResAuthButtons {
     [key: string]: string[];

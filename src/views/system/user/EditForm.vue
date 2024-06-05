@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     v-model="dialogFormVisible"
-    :title="handleType == 'add' ? '添加用户' : '编辑用户'"
+    :title="handleType == 'add' ? '添加部门' : '编辑部门'"
     width="680px"
     :before-close="closeDialog"
   >

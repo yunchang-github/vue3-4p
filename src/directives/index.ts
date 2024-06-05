@@ -6,6 +6,7 @@ import draggable from "./modules/draggable";
 import debounce from "./modules/debounce";
 import throttle from "./modules/throttle";
 import longpress from "./modules/longpress";
+import numberInput from "./modules/numberInput";
 
 const directivesList: { [key: string]: Directive } = {
   hasPermi,
@@ -14,7 +15,8 @@ const directivesList: { [key: string]: Directive } = {
   draggable,
   debounce,
   throttle,
-  longpress
+  longpress,
+  numberInput
 };
 
 const directives = {

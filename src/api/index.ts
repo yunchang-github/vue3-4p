@@ -57,6 +57,7 @@ class RequestHttp {
     this.service.interceptors.request.use(
       (config: CustomAxiosRequestConfig) => {
         const userStore = useUserStore();
+        // 不加token的 注册 登录
         const isCancelUseToken=config?.isCancelUseToken ? true: false
         // 当前请求需要显示 loading，在 api 服务中通过指定的第三个参数: { isShowGlobelLoading: true } 来控制
         config.isShowGlobelLoading && showFullScreenLoading();

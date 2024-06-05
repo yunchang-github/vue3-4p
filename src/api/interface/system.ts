@@ -77,12 +77,8 @@ export namespace User {
 export namespace Dept {
   // 请求参数
   export interface ReqParams {
-    username?: string | undefined;
-    phone?: string | undefined;
+    deptName?: string | undefined;
     status?: number | undefined
-    deptId?: number | undefined;
-    pageNum: number;
-    pageSize: number;
   }
   // 部门树状
   export interface treeData {
@@ -95,18 +91,26 @@ export namespace Dept {
     userId: number;
     username: string;
   }
+  export interface ResDeptList {
+    deptId: number;
+    deptName: string;
+    companyId: string;
+    parentId:number;
+    hasChildren?: boolean;
+    status: number | string;
+    orderTag?:number;
+    addTime?: string;
+    children?: ResDeptList[];
+  }
   export interface RuleForm {
-    userId?: string;
-    nickName: string;
-    deptId?: number | undefined;
-    phone: string;
-    email: string;
-    username: string;
-    password: string;
-    sex?: string;
+    deptName: string;
+    deptId: number | undefined;
+    parentId: number | undefined;
     status: string;
-    postIds?: string[];
-    roleIds?: string[];
+    orderTag?:string;
+    leader:string;
+    phone:string;
+    email: string;
   }
 }
 

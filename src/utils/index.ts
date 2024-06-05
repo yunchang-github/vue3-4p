@@ -359,3 +359,51 @@ export function findItemNested(enumData: any, callValue: any, value: string, chi
  * @param {*} parentId 父节点字段 默认 'parentId'
  * @param {*} children 孩子节点字段 默认 'children'
  */
+export function handleTree<T extends Record<string, any>>(
+  data: T[],
+  id: keyof T = 'id' as keyof T,
+  parentId: keyof T = 'parentId' as keyof T,
+  children: string = 'children'
+): T[] {
+  const config = {
+    id: id,
+    parentId: parentId,
+    childrenList: children
+  };
+
+  const childrenListMap: Record<string, T[]> = {};
+  const nodeIds: Record<string, T> = {};
+  const tree: T[] = [];
+
+  for (const d of data) {
+    const parentIdValue = d[config.parentId] as unknown as string;
+    if (!childrenListMap[parentIdValue]) {
+      childrenListMap[parentIdValue] = [];
+    }
+    nodeIds[d[config.id] as unknown as string] = d;
+    childrenListMap[parentIdValue].push(d);
+  }
+
+  for (const d of data) {
+    const parentIdValue = d[config.parentId] as unknown as string;
+    if (!nodeIds[parentIdValue]) {
+      tree.push(d);
+    }
+  }
+
+  for (const t of tree) {
+    adaptToChildrenList(t);
+  }
+
+  function adaptToChildrenList(o: T) {
+    if (childrenListMap[o[config.id] as unknown as string]) {
+      o[config.childrenList] = childrenListMap[o[config.id] as unknown as string];
+    }
+    if (o[config.childrenList]) {
+      for (const c of o[config.childrenList]) {
+        adaptToChildrenList(c);
+      }
+    }
+  }
+  return tree;
+}

@@ -3,3 +3,4 @@ export const PORT1 = "/yc-busi-basics";
 export const PORT2 = "/yc-busi-finance";
 export const PORT3 = "/yc-busi-wms";
 export const PORT4 = "/hooks";
+export const PORT5 = "yc-busi-auth";

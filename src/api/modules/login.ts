@@ -1,5 +1,5 @@
 import { Login } from "@/api/interface/index";
-import { PORT1 } from "@/api/config/servicePort";
+import { PORT1,PORT5 } from "@/api/config/servicePort";
 import http from "@/api";
 /**
  * @name 登录模块
@@ -7,7 +7,7 @@ import http from "@/api";
 // 用户登录
 export const loginApi = (data: Login.ReqLoginForm,deviceId:string) => {
   return http.request<Login.ResLogin>({
-    url: PORT1 + `/authentication/form`,
+    url: PORT5 + `/authentication/form`,
     method: "post",
     params:data,
     isCancelUseToken:true,
@@ -19,23 +19,28 @@ export const loginApi = (data: Login.ReqLoginForm,deviceId:string) => {
   });
 };
 // 注册方法
-export const register = (data: Login.registerFrom) => {
+export const register = (data: Login.registerFrom,deviceId:string) => {
   return http.request<Login.ResLogin>({
     url: PORT1 + "/system/register",
     isCancelUseToken:true,
     isShowGlobelLoading:true,
     method: 'post',
+    types:"json",
+    headers: {
+      deviceId,
+      // Authorization: "Basic eWM6c2VjcmV0"
+    },
     data
   })
 }
 //校验用户名是否已经注册过
-export const checkUserName = (name:string) => {
-  return http.request({
-    method: "get",
-    url: PORT1 + `/system/checkUserName`,
-    params: {name}
-  });
-};
+// export const checkUserName = (name:string) => {
+//   return http.request({
+//     method: "get",
+//     url: PORT1 + `/system/checkUserName`,
+//     params: {name}
+//   });
+// };
 // 获取按钮权限
 export const getAuthButtonListApi = () => {
   return http.request<Login.AuthButtonList>({

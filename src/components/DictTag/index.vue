@@ -7,6 +7,7 @@
           :key="item.value"
           :index="index"
           :class="item.raw.cssClass"
+          :size="item.size || 'Default'"
           >{{ item.label }}</span
         >
         <el-tag
@@ -14,6 +15,7 @@
           :disable-transitions="true"
           :key="item.value"
           :index="index"
+          :size="item.size || 'Default'"
           :type="item.type"
         >
           {{ item.label }}

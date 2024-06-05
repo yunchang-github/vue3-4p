@@ -36,7 +36,7 @@
             <img :src="codeUrl" @click="getCode" class="login-code-img" />
           </div>
         </el-form-item>
-        <div style="height:28px;margin-top:-10px;margin-bottom:10px;">
+        <div style="height: 28px; margin-top: -10px; margin-bottom: 10px">
           <el-checkbox v-model="ruleForm.rememberMe">记住密码</el-checkbox>
         </div>
         <div class="login-btn">
@@ -136,18 +136,18 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         Cookies.remove('rememberMe')
       }
       // 1,登录
-      const _data={
-        username:ruleForm.username,
+      const _data = {
+        username: ruleForm.username,
         password: encrypt(ruleForm.password) || '',
-        imageCode:ruleForm.imageCode
+        imageCode: ruleForm.imageCode
       }
-      const res = await loginApi(_data,deviceId.value)
+      const { data } = await loginApi(_data, deviceId.value)
       //2,保存请求回来的token和用户名
-      userStore.setToken(`bearer ${res.access_token}`)
-      let expiresIn = new Date(new Date().getTime() + res.expires_in * 1000);
-      Cookies.set("admin-Token", res.access_token, {expires: expiresIn});
-      Cookies.set("admin-Refresh-Token", res.refresh_token, {expires: new Date(new Date().getTime() + 600000 * 1000)});
-      Cookies.set("admin-Expires-In", expiresIn, {expires: expiresIn});
+      userStore.setToken(`bearer ${data.accessToken}`)
+      let expiresIn = new Date(new Date().getTime() + data.expiredIn * 1000)
+      Cookies.set('admin-Token', data.accessToken, { expires: expiresIn })
+      // Cookies.set("admin-Refresh-Token", res.refresh_token, {expires: new Date(new Date().getTime() + 600000 * 1000)});
+      // Cookies.set("admin-Expires-In", expiresIn, {expires: expiresIn});
 
       //3, 请求路由及添加动态路由
       await initDynamicRouter()
