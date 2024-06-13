@@ -52,7 +52,7 @@ export namespace User {
     userId: number;
     username: string;
   }
-   // 返回参数
+  // 返回参数
   export interface authRoleList {
     userId: string;
     username: string;
@@ -83,8 +83,8 @@ export namespace Dept {
   // 部门树状
   export interface treeData {
     id: number;
-    label:string;
-    children?:treeData[]
+    label: string;
+    children?: treeData[]
   }
   // 返回参数
   export interface ResUserList {
@@ -95,10 +95,10 @@ export namespace Dept {
     deptId: number;
     deptName: string;
     companyId: string;
-    parentId:number;
+    parentId: number;
     hasChildren?: boolean;
     status: number | string;
-    orderTag?:number;
+    orderTag?: number;
     addTime?: string;
     children?: ResDeptList[];
   }
@@ -107,9 +107,9 @@ export namespace Dept {
     deptId: number | undefined;
     parentId: number | undefined;
     status: string;
-    orderTag?:string;
-    leader:string;
-    phone:string;
+    orderTag?: string;
+    leader: string;
+    phone: string;
     email: string;
   }
 }
@@ -128,22 +128,22 @@ export namespace Role {
   // 树状
   export interface treeData {
     id: number;
-    label:string;
-    children?:treeData[]
+    label: string;
+    children?: treeData[]
   }
   // 新增编辑数据
   export interface RuleForm {
     roleName: string;
     roleKey: string;
-    orderTag:number;
-    status:string;
-    remarks:string;
-    dataScope?:string;
+    orderTag: number;
+    status: string;
+    remarks: string;
+    dataScope?: string;
     menuIds?: string[];
     deptIds?: string[];
-    menuCheckStrictly?:boolean;
-    deptCheckStrictly?:boolean;
-    companyId?:string;
+    menuCheckStrictly?: boolean;
+    deptCheckStrictly?: boolean;
+    companyId?: string;
   }
   export interface ResRoleList {
     roleId: number;
@@ -151,16 +151,60 @@ export namespace Role {
     roleKey: undefined | string;
     orderTag: number;
     status: string;
-    dataScope?:string;
+    dataScope?: string;
     menuIds?: string[];
     deptIds?: string[];
-    menuCheckStrictly?:boolean;
-    deptCheckStrictly?:boolean;
+    menuCheckStrictly?: boolean;
+    deptCheckStrictly?: boolean;
     remarks: string;
   }
   export interface roleAuth {
     roleId: string,
     username: string,
     phone: string
+  }
+}
+
+// 岗位模块
+export namespace Post {
+  // 请求参数
+  export interface ReqParams {
+    postCode?: string | undefined;
+    postName?: string | undefined;
+    status?: number | undefined;
+    pageNum: number;
+    pageSize: number;
+  }
+  export interface RuleForm {
+    postId?: string;
+    postCode?: string;
+    postName: string;
+    orderTag: number | string;
+    addTime?: string;
+    status: string;
+    remarks?: string;
+    companyId?: string | number
+  }
+}
+// 操作日志
+export namespace Operlog {
+  // 请求参数
+  export interface ReqParams {
+    title?: string | undefined;
+    operName?: string | undefined;
+    businessType?: number | undefined;
+    status?: string | undefined;
+    pageNum: number;
+    pageSize: number;
+  }
+  export interface RuleForm {
+    operId?: number;
+    title?: string;
+    operName: string;
+    requestMethod?: string;
+    operIp?: string;
+    businessType: number | string;
+    status: string | number;
+    operatorType?: number;
   }
 }

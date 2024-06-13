@@ -35,7 +35,12 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="显示排序" prop="orderTag">
-            <el-input v-model="form.orderTag" v-number-input="{ min: 0 }" placeholder="" clearable />
+            <el-input
+              v-model="form.orderTag"
+              v-number-input="{ min: 0 }"
+              placeholder="请输入排序"
+              clearable
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -160,14 +165,14 @@ const closeDialog = () => {
 }
 // 重置表单数据
 const resetFormData = () => {
-  form.deptId= undefined,
-  form.parentId= undefined,
-  form.deptName= '',
-  form.orderTag= '',
-  form.leader= '',
-  form.phone= '',
-  form.email= '',
-  form.status= '0'
+  form.deptId = undefined
+  form.parentId = undefined
+  form.deptName = ''
+  form.orderTag = ''
+  form.leader = ''
+  form.phone = ''
+  form.email = ''
+  form.status = '0'
 }
 
 // 提交表单
@@ -178,6 +183,7 @@ const saveDialog = async (formEl: FormInstance | undefined) => {
     let res: any // 不太知道返回的类型就使用any
     if (props.handleType == 'add') {
       res = await addFun(form)
+      console.log("新增提交后的数据",res)
     } else {
       res = await editFun(form)
     }

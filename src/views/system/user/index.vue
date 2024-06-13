@@ -328,7 +328,7 @@ const handleExport = () => {
   fileExportRef.value.acceptParams({pageName:'user',columns:column, isWMS: false })
 }
 //导出数据
-const saveExportDialog = (columnList) => {
+const saveExportDialog = (columnList:Column[]) => {
   let _data = {
     ...formInline,
     // columnList,
